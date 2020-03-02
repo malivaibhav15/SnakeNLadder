@@ -1,40 +1,81 @@
 #bin/bash -x
-player1=1
+player=2
 number=0
 ladder=1
 snake=2
 option=0
-position=0
+position1=0
+position2=0
 count=0
 winningPosition=100
 function play()
 {
-	while [[ $position -lt $winningPosition ]]
-	do
-		dice=$(((RANDOM%6)+1))
-		((count++))
-		option=$((RANDOM%3))
-		case $option in
+	while [[ $position1 -lt $winningPosition && $position2 -lt $winningPosition ]]
+   do
+		for (( index=1;index<=$player;index++ ))
+      do
+			if [[ $index -eq 1 ]]
+         then
+				dice=$(((RANDOM%6)+1))
+				((count++))
+				option=$((RANDOM%3))
+			case $option in
 			$number)
-				position=$(($position+$number))
+				position1=$(($position1+$number))
 				;;
 			$ladder)
-				position=$(($position+$dice))
+				position1=$(($position1+$dice))
 				;;
 			$snake)
-				position=$(($position-$dice))
+				position1=$(($position1-$dice))
 				;;
 		esac
-		echo "The position of dice after dice role=$position"
-		if [[ $position -lt 0 ]]
+		if [[ $position1 -lt 0 ]]
 		then
-			position=0
+			position1=0
 		fi
-		if [[ $position -gt 100 ]]
+		if [[ $position1 -gt 100 ]]
 		then
-			position=$(($position-$dice))
+			position1=$(($position1-$dice))
 		fi
+		if [[ $position1 -eq 100 ]]
+      then
+         echo "Player $index won the game"
+         break
+      fi
+	fi
+	if [[ $index -eq 2 ]]
+   then
+		dice=$(((RANDOM%6)+1))
+      ((count++))
+      option=$((RANDOM%3))
+      case $option in
+		$number)
+         position2=$(($position2+$number))
+         ;;
+      $ladder)
+         position2=$(($position2+$dice))
+         ;;
+      $snake)
+         position2=$(($position2-$dice))
+         ;;
+      esac
+      if [[ $position2 -lt 0 ]]
+      then
+			position2=0
+      fi
+      if [[ $position2 -gt 100 ]]
+      then
+	      position2=$(($position2-$dice))
+      fi
+		if [[ $position2 -eq 100 ]]
+      then
+        echo "Player $index won the game"
+		break
+		fi
+	 fi
 	done
-	echo "Number of times dice rolled=$count"
+	done
+   echo "Number of times dice rolled=$count"
 }
 play
