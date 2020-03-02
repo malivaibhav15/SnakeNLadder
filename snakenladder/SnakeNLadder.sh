@@ -10,7 +10,7 @@ function play()
 {
 	while [[ $position -lt $winningPosition ]]
 	do
-		dice=$((RANDOM%6))
+		dice=$(((RANDOM%6)+1))
 		option=$((RANDOM%3))
 		case $option in
 			$number)
@@ -26,6 +26,10 @@ function play()
 		if [[ $position -lt 0 ]]
 		then
 			position=0
+		fi
+		if [[ $position -gt 100 ]]
+		then
+			position=$(( $position-$dice ))
 		fi
 	done
 }
