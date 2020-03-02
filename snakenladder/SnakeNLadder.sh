@@ -1,5 +1,24 @@
 #bin/bash -x
 player1=1
-startPosition=0
 number=0
-number=$(((RANDOM%6)+1))
+ladder=1
+snake=2
+option=0
+position=0
+function play()
+{
+	dice=$((RANDOM%6))
+	option=$((RANDOM%3))
+	case $option in
+		$number)
+			position=$(($position+$number))
+			;;
+		$ladder)
+			position=$(($position+$dice))
+			;;
+		$snake)
+			position=$(($position-$dice))
+			;;
+	esac
+}
+play
